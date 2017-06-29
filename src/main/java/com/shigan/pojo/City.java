@@ -8,6 +8,16 @@ public class City {
     private String cityName;
     private Integer parentId;
     private String community;
+    private Integer cityid;
+
+    public void setCityid(Integer cityid) {
+        this.cityid = cityid;
+    }
+
+    public Integer getCityid() {
+
+        return cityid;
+    }
 
     public void setId(Integer id) {
         this.id = id;

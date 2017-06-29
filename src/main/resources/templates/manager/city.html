@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>城市列表页面</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>城市名</th>
+            <th>小区名</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="city:${citys}">
+            <th th:text="${city.cityName}">城市名</th>
+            <th th:text="${city.community}">小区名</th>
+            <th>删除</th>
+            <th>修改</th>
+        </tr>
+        <tr><a th:href="@{/muser/toaddcity}">增加城市</a></tr>
+        <tr><a th:href="@{/muser/toaddcommunity}">增加小区</a></tr>
+
+    </table>
+</body>
+</html>

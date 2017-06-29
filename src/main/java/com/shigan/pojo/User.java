@@ -6,21 +6,28 @@ package com.shigan.pojo;
 public class User {
 
     private Integer id ;
-    private String phone_number;
+    private String phoneNumber;
     private String nickname;
     private String name;
     private String city;
     private String community;
     private String address;
     private String password;
+    private Integer roleid;
+
+    public void setRoleid(Integer roleid) {
+        this.roleid = roleid;
+    }
+
+    public Integer getRoleid() {
+
+        return roleid;
+    }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
-    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -51,8 +58,13 @@ public class User {
         return id;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+
+        return phoneNumber;
     }
 
     public String getNickname() {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>增加城市页面</title>
+</head>
+<body>
+    <div >
+        <p>城市名：<input type="text" name="cityName" id="cityName" onblur="testcity()"/><span id="spancityname"></span></p>
+        <p>城市编号：<input type="text" name="cityid" id="cityid" onblur="testid()"/><span id="spancityid"></span></p>
+        <a href="javascript:void(0)" onclick="submit()">添加</a><span id="spansubmit"></span>
+    </div>
+
+</body>
+<script src="/jquery-3.1.1.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var city;
+    var cityid;
+    function testcity(){
+
+        city= $("#cityName").val();
+        $.ajax({
+            url:"/muser/testcity",
+            data:{cityName:city},
+            type:"get",
+            success:function (data) {
+                if(data=="have"){
+                    $("#cityName").val("");
+                    $("#spancityname").text('城市已经存在');
+                    city="";
+                    return false;
+                }
+            }
+        })
+
+    }
+    function testid(){
+        cityid=$("#cityid").val();
+
+        $.ajax({
+            url:"/muser/testcityid",
+            data:{cityid:cityid},
+            type:"get",
+            success:function (data) {
+                if(data=="have"){
+                    $("#cityid").val("");
+                    $("#spancityid").text('城市编号已存在');
+                    cityid="";
+                    return false;
+                }
+            }
+        })
+
+    }
+    function submit(){
+        $.ajax({
+            url:"/muser/addcity",
+            data:{cityid:cityid,cityName:city},
+            type:"get",
+            success:function (data) {
+                if(data=="success"){
+                    $("#spansubmit").text("添加成功")
+                }
+            }
+        })
+    }
+    /*]]>*/
+</script>
+
+</html>

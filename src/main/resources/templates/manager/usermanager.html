@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户管理页面</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>用户手机号</th>
+            <th>用户昵称</th>
+            <th>用户实名</th>
+            <th>所在城市</th>
+            <th>所在小区</th>
+            <th>详细地址</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="user:${users}">
+            <th th:text="${user.phoneNumber}"></th>
+            <th th:text="${user.nickname}"></th>
+            <th th:text="${user.name}"></th>
+            <th th:text="${user.city}"></th>
+            <th th:text="${user.community}"></th>
+            <th th:text="${user.address}"></th>
+            <th>修改</th>
+            <th>删除</th>
+        </tr>
+    </table>
+</body>
+</html>

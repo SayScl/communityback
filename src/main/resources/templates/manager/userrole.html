@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户管理页面</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>角色名</th>
+            <th>对应权限</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="list:${list}">
+            <th th:text="${list.rolename}">角色名</th>
+            <th th:text="${list.fun}">对应权限</th>
+            <th>增加权限</th>
+            <th>删除权限</th>
+        </tr>
+
+    </table>
+</body>
+</html>

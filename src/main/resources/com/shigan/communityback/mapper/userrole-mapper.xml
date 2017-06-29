@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shigan.mapper.manager.UserRoleMapper">
+    <resultMap id="urMap" type="userRole">
+        <id property="id" column="id"></id>
+        <result property="roleid" column="roleid"></result>
+        <result property="functionid" column="functionid"></result>
+        <result property="rolename" column="rolename"></result>
+        <result property="fun" column="fun"></result>
+    </resultMap>
+    
+    <select id="getUR" resultMap="urMap">
+        SELECT r.*,GROUP_CONCAT(us.functionid  ) AS fun FROM role r LEFT JOIN userrole us ON r.id=us.roleid
+    </select>
+</mapper>
