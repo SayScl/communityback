@@ -49,4 +49,31 @@ public class CityServiceImpl implements CityService {
         City c1 = cityMapper.getcityid(city);
         return c1;
     }
+
+    //查询所有城市名
+    @Override
+    public List<City> getcityname() {
+        List<City> list = cityMapper.getcityname();
+        return list;
+    }
+
+    //查找这个城市下是否已经有小区名了
+    public City getCommunity(City city){
+        City community = cityMapper.getCommunity(city);
+        return community;
+    }
+
+
+
+    //根据cityid查城市信息
+    public List<City> getCityByCityId(City city){
+        List<City> cityByCityId = cityMapper.getCityByCityId(city);
+        return cityByCityId;
+    }
+
+    //增加小区1
+    public int addcommunity1(City city){
+        int i = cityMapper.addcommunity1(city);
+        return i;
+    }
 }

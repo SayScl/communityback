@@ -23,4 +23,16 @@ public interface CityMapper {
     public City getone(City city);
     //查询城市id是否有
     public City getcityid(City city);
+
+    //查询所有城市名
+    public List<City> getcityname();
+
+    //查找这个城市下是否已经有小区名了
+    public City getCommunity(City city);
+
+    //根据cityid查城市信息
+    public List<City> getCityByCityId(City city);
+
+    //增加小区1
+    public int addcommunity1(City city);
 }

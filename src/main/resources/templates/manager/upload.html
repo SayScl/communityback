@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Upload Page</title>
+
+    <style>
+
+        * {
+            font-family: "Microsoft YaHei UI";
+        }
+
+        .uploadButton {
+            width: 100px;
+            height: 30px;
+            border-radius: 25px;
+            background-color: beige;
+            display: flex;
+            flex-flow: row nowrap;
+
+        }
+    </style>
+
+
+
+</head>
+<body>
+
+
+
+<div>
+    <div><span>广告管理</span></div>
+    <div><span>广告名</span><input type="text" id="adname" name="adname"/></div>
+
+    <!--上传图到七牛获得图片地址-->
+    <div class="container">
+        <span>上传广告图片</span>
+        <div class="uploadButton" id="uploadButton">
+            <div style="margin: auto;font-weight: bold; font-size: 24px; cursor: pointer;">上传</div>
+        </div>
+        <span>上传文件URL地址</span>
+        <span id="result"></span>
+        <input type="hidden" id="hresult" name="path"/>
+    </div>
+
+
+    <div><span>广告链接</span><input type="text" id="url" name="url"/></div>
+    <div><span>选择广告位</span>
+        <select id="adlocationid">
+            <option value="0">广告位</option>
+            <option th:each="ad:${list}" th:value="${ad.id}" th:text="${ad.location}"></option>
+        </select>
+    </div>
+    <div><a href="javascript:void(o)" onclick="submit()">新增广告</a></div>
+</div>
+
+
+
+
+<script src="/jquery-3.1.1.min.js"></script>
+<script src="/js/qiniu.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var _token = null;
+
+        $.ajax({
+            url: '/muser/token',
+            type: 'get',
+            success: function (data) {
+                _token = data;
+                console.debug('A: ' + _token);
+            }
+        });
+
+
+        // 上传空间URL
+        var uploadSpace = 'http://osatg44gp.bkt.clouddn.com';
+
+        qiniu.config({
+            url: uploadSpace,
+            uploadUrl: 'up-z2.qiniu.com' // 七牛统一的一个上传域名，固定
+        });
+
+
+        qiniu.bind($('#uploadButton'), {
+            filter: 'image'
+        }).on('file', function(file) {
+
+            console.debug('---');
+
+            var imagesBucket = qiniu.bucket('community', {
+                putToken: _token
+            });
+
+            console.debug('B: ' + _token);
+
+            // 上传文件名
+//                var fileName = 'abc_' + new Date().getMilliseconds() + '.jpg';
+
+//                var fileName
+
+            console.debug(file);
+
+            var fileName = file.name;
+
+            fileName = fileName+new Date().getMilliseconds();
+
+//                    return;
+
+            console.debug('文件名：'  + fileName);
+
+
+            // Upload
+            imagesBucket.putFile(fileName, file)
+                .then(
+                    function(reply) {
+                        // 上传成功
+//                            console.dir(reply);
+                        console.debug(reply.hash);
+                        console.debug(reply.key);
+                        var se = new Date().getMilliseconds();
+//                          $('#result').html(uploadSpace + '/' + fileName + '?v=' + se);
+                        $('#result').text(uploadSpace + '/' + fileName + '?v=' + se);
+                        $('#hresult').val(uploadSpace + '/' + fileName + '?v=' + se)
+                    },
+                    function(err) {
+                        // 上传失败
+                        console.error(err);
+                    }
+                );
+        });
+
+    });
+
+    $.extend({
+        upload2Qiniu:function () {
+
+        }
+    });
+
+    function submit(){
+        var adname=$("#adname").val();
+        var path=$("#hresult").val();
+        var url=$("#url").val();
+        var adlocationid=$("#adlocationid :selected").val();
+
+        $.ajax({
+            url:"/muser/addAd",
+            type:"post",
+            data:{adname:adname,path:path,url:url,adlocationid:adlocationid},
+            success:function(data){
+                if(data=="success"){
+                    alert("广告位添加成功")
+                }
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>增加小区页面</title>
+</head>
+<body>
+<div >
+    <p>小区名名：<input type="text" name="community" id="community" onblur="testcommunity()"/><span id="spancityname"></span></p>
+    <p>小区所在城市：<select id="cityid">
+                        <span th:each="city:${citys}">
+                            <option th:text="${city.cityName}" th:value="${city.cityid}"></option>
+                        </span>
+                      </select>
+    </p>
+        <a href="javascript:void(0)" onclick="submit()">添加</a><span id="spansubmit"></span>
+</div>
+
+</body>
+<script src="/jquery-3.1.1.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var community;
+    var cityid;
+    function testcommunity(){
+
+        community= $("#community").val();
+        cityid=$("#cityid :selected").val();
+        $.ajax({
+            url:"/muser/testcommunity",
+            data:{community:community,cityid:cityid},
+            type:"get",
+            success:function (data) {
+                if(data=="have"){
+                    $("#community").val("");
+                    $("#spancityname").text('小区在该城市已经存在');
+                    community="";
+                    return false;
+                }else{
+                    $("#spancityname").text('小区名可用');
+                }
+            }
+        })
+
+
+    }
+    function submit(){
+        $.ajax({
+            url:"/muser/addcommunity",
+            data:{cityid:cityid,community:community},
+            type:"get",
+            success:function (data) {
+                if(data=="success"){
+                    $("#spansubmit").text("添加成功")
+                }
+            }
+        })
+    }
+    /*]]>*/
+</script>
+
+</html>

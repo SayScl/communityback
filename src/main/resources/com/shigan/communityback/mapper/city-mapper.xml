@@ -21,15 +21,37 @@
 
     <!--添加小区-->
     <insert id="addcommunity" parameterType="city">
-        insert into city (parent_id,community) values(#{parentId},#{community}) where id=#{id}
+        UPDATE city SET parent_id=#{parentId}, community=#{community} WHERE id=#{id}
     </insert>
 
+    <!--添加小区1-->
+    <insert id="addcommunity1" parameterType="city">
+        insert into city (city_name,parent_id,community,cityid) values(#{cityName},#{parentId},#{community},#{cityid})
+    </insert>
+
+    <!--查城市是否已经存在-->
     <select id="getone" parameterType="city" resultMap="cityMap">
         select DISTINCT city_name  from city where city_name =#{cityName}
     </select>
 
+    <!--查城市id是否已经存在-->
     <select id="getcityid" parameterType="city" resultMap="cityMap">
         select DISTINCT cityid  from city where cityid=#{cityid}
+    </select>
+
+    <!--查找所有城市名-->
+    <select id="getcityname" resultMap="cityMap">
+        select DISTINCT city_name,cityid from city
+    </select>
+
+<!--查找该城市下是否已经存在小区名-->
+    <select id="getCommunity" parameterType="city" resultMap="cityMap">
+        SELECT community FROM city WHERE cityid=#{cityid} AND community=#{community}
+    </select>
+
+    <!--根据城市id查询城市信息-->
+    <select id="getCityByCityId" parameterType="city" resultMap="cityMap">
+        select id,city_name,parent_id,community,cityid from city where cityid=#{cityid}
     </select>
 
 </mapper>

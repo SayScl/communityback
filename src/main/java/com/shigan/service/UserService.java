@@ -17,4 +17,5 @@ public interface UserService {
 
     //查询一个用户
     public User getUser(User user);
+
 }

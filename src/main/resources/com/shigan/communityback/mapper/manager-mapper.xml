@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shigan.mapper.manager.ManagerMapper">
+    <resultMap id="adlocationMap" type="adlocation">
+        <id property="id" column="id"></id>
+        <result property="location" column="location"></result>
+    </resultMap>
+
+
+    <resultMap id="adMap" type="ad">
+        <id property="id" column="id"></id>
+        <result property="adname" column="adname"></result>
+        <result property="adlocationid" column="adlocationid"></result>
+        <result property="url" column="url"></result>
+        <result property="path" column="path"></result>
+    </resultMap>
+
+
+
+    <!--查询所有广告位-->
+    <select id="getAdLocations" resultMap="adlocationMap">
+        select id,location from adlocation
+    </select>
+
+    <!--查询所有广告-->
+    <select id="getAd" resultMap="adMap">
+        select id,adname,adlocationid,url,path from ad
+    </select>
+
+<!--增加一条广告-->
+    <insert id="addAd" parameterType="ad">
+        insert into ad (adname,adlocationid,url,path) values (#{adname},#{adlocationid},#{url},#{path})
+    </insert>
+
+</mapper>
