@@ -3,17 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shigan.mapper.manager.ManagerMapper">
+
     <resultMap id="adlocationMap" type="adlocation">
         <id property="id" column="id"></id>
         <result property="location" column="location"></result>
     </resultMap>
 
 
+    <!--广告map-->
     <resultMap id="adMap" type="ad">
         <id property="id" column="id"></id>
         <result property="adname" column="adname"></result>
         <result property="adlocationid" column="adlocationid"></result>
         <result property="url" column="url"></result>
+        <result property="path" column="path"></result>
+    </resultMap>
+
+
+    <resultMap id="limitMap" type="limit">
+        <id property="id" column="id"></id>
+        <result property="limitname" column="limitname"></result>
         <result property="path" column="path"></result>
     </resultMap>
 
@@ -33,5 +42,35 @@
     <insert id="addAd" parameterType="ad">
         insert into ad (adname,adlocationid,url,path) values (#{adname},#{adlocationid},#{url},#{path})
     </insert>
+
+
+    <!--查询所有页面功能-->
+    <select id="getLimits" resultMap="limitMap">
+        select * from limitfunction
+    </select>
+
+    <!--添加页面功能-->
+    <insert id="addlimit" parameterType="limit">
+        INSERT into limitfunction (limitname,path) VALUES (#{limitname},#{path})
+    </insert>
+
+    <!--修改功能信息-->
+    <update id="updateLimit" parameterType="limit">
+      update limitfunction
+      <set>
+          <if test="limitname!=null and limitname!=''">
+              limitname=#{limitname},
+          </if>
+          <if test="path!=null and path!=''">
+              path=#{path}
+          </if>
+      </set>
+        where id=#{id}
+    </update>
+
+    <!--根据id查找页面功能-->
+    <select id="getLimtById" parameterType="limit" resultMap="limitMap">
+        select * from limitfunction where id=#{id}
+    </select>
 
 </mapper>

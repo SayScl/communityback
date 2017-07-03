@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>页面功能列表</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>功能名</th>
+        <th>功能图标地址</th>
+        <th colspan="2">操作</th>
+    </tr>
+    <tr th:each="limit:${limits}">
+        <th th:text="${limit.limitname}"></th>
+        <th th:text="${limit.path}"></th>
+        <th><a th:href="@{/muser/toModifyLimit(id=${limit.id})}">修改</a></th>
+        <th>删除</th>
+    </tr>
+</table>
+<div><a href="/muser/toAddLimit">添加功能</a></div>
+</body>
+<script src="/jquery-3.1.1.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    /*]]>*/
+</script>
+
+</html>

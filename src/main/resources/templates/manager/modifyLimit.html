@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>功能修改页面</title>
+</head>
+<body>
+    <input id="id" type="hidden" th:value="${limit.id}"/>
+    <div><span>功能名：</span><input type="text" name="limitname" th:value="${limit.limitname}"/></div>
+    <div><img id="image" th:src="${limit.path}"></img></div>
+    <div>
+        <div class="container">
+            <span>修改图片</span>
+            <div class="uploadButton" id="uploadButton">
+                <div style="margin: auto;font-weight: bold; font-size: 24px; cursor: pointer;">上传</div>
+            </div>
+            <input type="hidden" id="hresult" name="path"/>
+        </div>
+    </div>
+    <div><a id="modify" href="javascript:void(0)" onclick="modify()">确认修改</a></div>
+
+</body>
+<script src="/jquery-3.1.1.min.js"></script>
+<script src="/js/qiniu.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var _token = null;
+
+        $.ajax({
+            url: '/muser/token',
+            type: 'get',
+            success: function (data) {
+                _token = data;
+                console.debug('A: ' + _token);
+            }
+        });
+
+
+        // 上传空间URL
+        var uploadSpace = 'http://osatg44gp.bkt.clouddn.com';
+
+        qiniu.config({
+            url: uploadSpace,
+            uploadUrl: 'up-z2.qiniu.com' // 七牛统一的一个上传域名，固定
+        });
+
+
+        qiniu.bind($('#uploadButton'), {
+            filter: 'image'
+        }).on('file', function(file) {
+
+            console.debug('---');
+
+            var imagesBucket = qiniu.bucket('community', {
+                putToken: _token
+            });
+
+            console.debug('B: ' + _token);
+
+            // 上传文件名
+//                var fileName = 'abc_' + new Date().getMilliseconds() + '.jpg';
+
+//                var fileName
+
+            console.debug(file);
+
+            var fileName = file.name;
+
+            fileName = fileName+new Date().getMilliseconds();
+
+//                    return;
+
+            console.debug('文件名：'  + fileName);
+
+
+            // Upload
+            imagesBucket.putFile(fileName, file)
+                .then(
+                    function(reply) {
+                        // 上传成功
+//                            console.dir(reply);
+                        console.debug(reply.hash);
+                        console.debug(reply.key);
+                        var se = new Date().getMilliseconds();
+//                          $('#result').html(uploadSpace + '/' + fileName + '?v=' + se);
+                        $('#image').attr("src",'limit/'+uploadSpace + '/' + fileName + '?v=' + se)
+                        $('#result').text('limit/'+uploadSpace + '/' + fileName + '?v=' + se);
+                        $('#hresult').val('limit/'+uploadSpace + '/' + fileName + '?v=' + se)
+                    },
+                    function(err) {
+                        // 上传失败
+                        console.error(err);
+                    }
+                );
+        });
+
+    });
+
+    $.extend({
+        upload2Qiniu:function () {
+
+        }
+    });
+
+    function modify(){
+        var limitname=$('#limitname').val();
+        var path=$('#hresult').val();
+        var id=$('#id').val();
+        $.ajax({
+            url:"/muser/modifyLimit",
+            data:{id:id,limitname:limitname,path:path},
+            type:"post",
+            success:function(data){
+
+                if(data=="success"){
+                    alert('修改成功')
+                }else{
+                    alert("修改失败")
+                }
+            }
+        })
+
+    }
+
+</script>
+</html>

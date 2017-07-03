@@ -5,6 +5,7 @@ import com.shigan.pojo.*;
 import com.shigan.service.CityService;
 import com.shigan.service.QiniuUploadService;
 import com.shigan.service.usermanager.AdManagerService;
+import com.shigan.service.usermanager.LimitService;
 import com.shigan.service.usermanager.UserManagerService;
 import com.shigan.service.usermanager.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ import java.util.List;
 @Controller
 @RequestMapping("muser")
 public class ManagerController {
+
+
+    @Autowired
+    private LimitService limitService;
     @Autowired
     private AdManagerService adManagerService;
 
@@ -215,8 +220,70 @@ public class ManagerController {
         }
     }
 
+    //查询所有页面功能
+    @RequestMapping("limitmanager")
+    public String getLimits(Model model){
+        List<Limit> limits = limitService.getLimits();
+        model.addAttribute("limits",limits);
+        return "manager/limit";
+    }
+
+    //跳转到增加页面功能
+    @RequestMapping("toAddLimit")
+    public String toAddLimit(){
+        return "manager/addLimit";
+    }
+
+    //增加新面面功能
+    @PostMapping("addLimit")
+    @ResponseBody
+    public String addLimit(HttpServletRequest request){
+        String limitname = request.getParameter("limitname");
+        String path = request.getParameter("path");
+        Limit limit=new Limit();
+        limit.setLimitname(limitname);
+        limit.setPath(path);
+        int i = limitService.addlimit(limit);
+        if(i>0){
+            return "success";
+        }else{
+            return "faild";
+        }
+    }
 
 
+    //跳转到修改功能信息页面
+    @RequestMapping("toModifyLimit")
+    public String toModifyLimit(HttpServletRequest request,Model model){
+        String id = request.getParameter("id");
+        Limit limit =new Limit();
+        if(id!=null){
+            limit.setId(Integer.parseInt(id));
+        }
+        Limit limt = limitService.getLimtById(limit);
+        model.addAttribute("limit",limt);
+        return "manager/modifyLimit";
+    }
 
 
+    //修改功能信息
+    @PostMapping("modifyLimit")
+    @ResponseBody
+    public String modifyLimit(HttpServletRequest request){
+        String limitname = request.getParameter("limitname");
+        String path = request.getParameter("path");
+        String id = request.getParameter("id");
+        Limit limit=new Limit();
+        if(id!=null){
+            limit.setId(Integer.parseInt(id));
+        }
+        limit.setPath(path);
+        limit.setLimitname(limitname);
+        int i = limitService.updateLimit(limit);
+        if(i>0) {
+            return "success";
+        }else{
+            return "faild";
+        }
+    }
 }
