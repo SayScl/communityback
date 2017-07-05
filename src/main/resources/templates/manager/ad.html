@@ -92,6 +92,7 @@
                         <th>广告位</th>
                         <th>广告链接</th>
                         <th>广告图片链接</th>
+                        <th>图片</th>
                         <th colspan="2">操作</th>
                     </tr>
                     </thead>
@@ -102,8 +103,9 @@
                         <th th:text="${ad.adlocationid}">广告位</th>
                         <th th:text="${ad.url}">广告链接</th>
                         <th th:text="${ad.path}">广告图片链接</th>
+                        <th><img th:src="${ad.path}"/></th>
                         <th>删除</th>
-                        <th>修改</th>
+                        <th><a th:href="@{/muser/toModifyAd(id=${ad.id})}">修改</a></th>
                     </tr>
                     <tr><a th:href="@{/muser/toupload}">添加广告</a></tr>
                     </tbody>

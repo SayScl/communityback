@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shigan.mapper.manager.ManagerMapper">
 
+    <!--广告位map-->
     <resultMap id="adlocationMap" type="adlocation">
         <id property="id" column="id"></id>
         <result property="location" column="location"></result>
@@ -20,17 +21,26 @@
     </resultMap>
 
 
+    <!--页面功能-->
     <resultMap id="limitMap" type="limit">
         <id property="id" column="id"></id>
         <result property="limitname" column="limitname"></result>
         <result property="path" column="path"></result>
     </resultMap>
 
-
-
     <!--查询所有广告位-->
     <select id="getAdLocations" resultMap="adlocationMap">
         select id,location from adlocation
+    </select>
+
+    <!--分页查询广告位-->
+    <select id="getAdLocationByPage" parameterType="adlocation" resultMap="adlocationMap">
+        select * from adlocation limit #{startrow},#{pageSize}
+    </select>
+
+    <!--查找广告位总条数-->
+    <select id="getAdLocationCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM adlocation
     </select>
 
     <!--查询所有广告-->
@@ -43,6 +53,10 @@
         insert into ad (adname,adlocationid,url,path) values (#{adname},#{adlocationid},#{url},#{path})
     </insert>
 
+    <!--根据Id查广告-->
+    <select id="getAdById" parameterType="ad" resultMap="adMap">
+        select * from ad where id=#{id}
+    </select>
 
     <!--查询所有页面功能-->
     <select id="getLimits" resultMap="limitMap">
@@ -65,6 +79,26 @@
               path=#{path}
           </if>
       </set>
+        where id=#{id}
+    </update>
+
+
+
+
+    <!--修改广告信息-->
+    <update id="updateAd" parameterType="ad">
+        update ad
+        <set>
+            <if test="adname!=null and adname!=''">
+                adname=#{adname},
+            </if>
+            <if test="path!=null and path!=''">
+                path=#{path}
+            </if>
+            <if test="url!=null and url!=''">
+                url=#{url}
+            </if>
+        </set>
         where id=#{id}
     </update>
 

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>后台管理页面</title>
+    <title>修改广告信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template."/>
     <meta name="author" content="Muhammad Usman"/>
@@ -74,44 +74,26 @@
 
 
 <div id="content" class="span10">
-    <div class="row-fluid sortable">
-        <div class="box span12">
-            <div class="box-header well" >
-                <h2><i class="icon-user"></i>用户管理</h2>
-                <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-                </div>
-            </div>
-            <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable datatable">
-                    <thead>
-                    <tr>
-                        <th>功能名</th>
-                        <th>功能图标地址</th>
-                        <th>图片</th>
-                        <th colspan="2">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="limit:${limits}">
-                        <th th:text="${limit.limitname}"></th>
-                        <th th:text="${limit.path}"></th>
-                        <th><img th:src="${limit.path}"/></th>
-                        <th><a th:href="@{/muser/toModifyLimit(id=${limit.id})}">修改</a></th>
-                        <th>删除</th>
-                    </tr>
-                    <tr><a th:href="@{/muser/toAddLimit}">增加功能</a></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div><!--/span-->
 
-    </div><!--/row-->
+    <input id="id" type="hidden" th:value="${ad.id}"/>
+    <div><span>广告名字：</span><input type="text" id="adname" name="adname" th:value="${ad.adname}"/></div>
+    <div><span>广告链接：</span><input type="text" id="url" name="url" th:value="${ad.url}"/></div>
+    <div><img id="image" th:src="${ad.path}"></img></div>
+    <div>
+        <div class="container">
+            <span>修改图片</span>
+            <div class="uploadButton" id="uploadButton">
+                <div style="margin: auto;font-weight: bold; font-size: 24px; cursor: pointer;">上传</div>
+            </div>
+            <input type="hidden" id="hresult" name="path"/>
+        </div>
+    </div>
+    <div><a id="modify" href="javascript:void(0)" onclick="modifyAd()">确认修改</a></div>
 
 </div><!--/row-->
 
+
+<script src="/js/qiniu.js"></script>
 
 <!-- jQuery -->
 <script src="/js/jquery-1.7.2.min.js"></script>

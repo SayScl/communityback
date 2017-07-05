@@ -178,14 +178,6 @@ $(document).ready(function(){
 
 
 
-
-
-
-
-
-
-
-
 });
 
 //上面是加载就启动js
@@ -836,6 +828,32 @@ function modify(){
         data:{id:id,limitname:limitname,path:path},
         type:"post",
         success:function(data){
+            if(data=="success"){
+                alert('修改成功')
+            }else{
+                alert("修改失败")
+            }
+        }
+    })
+
+}
+
+
+
+
+
+
+//修改页面功能
+function modifyAd(){
+    var adname=$('#adname').val();
+    var path=$('#hresult').val();
+    var id=$('#id').val();
+    var url=$('#url').val();
+    $.ajax({
+        url:"/muser/modifyAd",
+        data:{id:id,adname:adname,path:path,url:url},
+        type:"post",
+        success:function(data){
 
             if(data=="success"){
                 alert('修改成功')
@@ -868,9 +886,11 @@ function submitlimit(){
 
 //增加小区
 function addcommunity(){
+  var  cityid=$("#cityid :selected").val()
+   var community1=$("#community").val()
     $.ajax({
         url:"/muser/addcommunity",
-        data:{cityid:cityid,community:community},
+        data:{cityid:cityid,community:community1},
         type:"get",
         success:function (data) {
             if(data=="success"){

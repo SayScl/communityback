@@ -12,11 +12,11 @@
     </resultMap>
 
     <select id="getCity" resultMap="cityMap">
-        SELECT DISTINCT c1.city_name,  c1.community FROM city c1 INNER JOIN city c2 ON c1.parent_id=c2.cityid
+        SELECT DISTINCT c1.city_name, c1.community FROM city c1 INNER JOIN city c2 ON c1.parent_id=c2.cityid
     </select>
     <!--添加城市-->
     <insert id="addcity" parameterType="city">
-        insert into city (city_name,cityid) VALUES (#{cityName},#{cityid})
+        insert into city (city_name,cityid,parent_id) VALUES (#{cityName},#{cityid},#{parentId})
     </insert>
 
     <!--添加小区-->

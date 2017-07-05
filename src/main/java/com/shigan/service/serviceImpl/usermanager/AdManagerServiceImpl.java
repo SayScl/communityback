@@ -1,5 +1,6 @@
 package com.shigan.service.serviceImpl.usermanager;
 
+import cn.itcast.common.page.Pagination;
 import com.shigan.mapper.manager.ManagerMapper;
 import com.shigan.pojo.Ad;
 import com.shigan.pojo.Adlocation;
@@ -36,6 +37,35 @@ public class AdManagerServiceImpl implements AdManagerService{
     @Transactional
     public int addAd(Ad ad) {
         int i = managerMapper.addAd(ad);
+        return i;
+    }
+
+    //查询广告位总条数
+    @Override
+    public int getAdLocationCount() {
+        int i = managerMapper.getAdLocationCount();
+        return i;
+    }
+
+    //获得广告位的分页对象
+    @Override
+    public Pagination getAdLocationByPage(Adlocation adlocation) {
+        int total = managerMapper.getAdLocationCount();
+        Pagination pagination=new Pagination(adlocation.getStartrow(),adlocation.getPageSize(),total);
+        pagination.setList(managerMapper.getAdLocationByPage(adlocation));
+        return pagination;
+    }
+
+    //根据Id查广告
+    @Override
+    public Ad getAdById(Ad ad) {
+        Ad ads = managerMapper.getAdById(ad);
+        return ads;
+    }
+
+    @Override
+    public int updateAd(Ad ad) {
+        int i = managerMapper.updateAd(ad);
         return i;
     }
 }

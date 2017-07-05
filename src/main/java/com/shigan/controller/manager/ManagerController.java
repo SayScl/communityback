@@ -1,5 +1,10 @@
 package com.shigan.controller.manager;
 
+import cn.itcast.common.page.Pagination;
+import cn.itcast.common.page.SimplePage;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shigan.mapper.manager.ManagerMapper;
 import com.shigan.pojo.*;
 import com.shigan.service.CityService;
@@ -8,8 +13,10 @@ import com.shigan.service.usermanager.AdManagerService;
 import com.shigan.service.usermanager.LimitService;
 import com.shigan.service.usermanager.UserManagerService;
 import com.shigan.service.usermanager.UserRoleService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,12 +84,14 @@ public class ManagerController {
 
     //增加城市
     @RequestMapping("addcity")
+    @ResponseBody
     public String addcc(HttpServletRequest request){
         String cityName = request.getParameter("cityName");
         String cityid = request.getParameter("cityid");
         City city =new City();
         city.setCityName(cityName);
         city.setCityid(Integer.parseInt(cityid));
+        city.setParentId(Integer.parseInt(cityid));
         int rows = cityService.addcity(city);
         if(rows>0){
             return "success";
@@ -159,7 +168,7 @@ public class ManagerController {
         }
         List<City> cityByCityId = cityService.getCityByCityId(c1);
         for(int i=0;i<cityByCityId.size();i++){
-            if(cityByCityId.get(i).getParentId()==null && cityByCityId.get(i).getCommunity()==null){
+            if(cityByCityId.get(i).getCommunity()==null){
                 c1.setId(cityByCityId.get(i).getId());
                 int row = cityService.addcommunity(c1);
                 if(row>0){
@@ -172,7 +181,7 @@ public class ManagerController {
         c1.setCityName(cityByCityId.get(0).getCityName());
         int rows = cityService.addcommunity1(c1);
         if(rows>0){
-            return "success";
+            return "have";
         }else{
             return "faild";
         }
@@ -295,4 +304,66 @@ public class ManagerController {
             return "faild";
         }
     }
+
+
+    //跳转到修改广告信息页面
+    @RequestMapping("toModifyAd")
+    public String toModifyAd(HttpServletRequest request,Model model){
+        String id = request.getParameter("id");
+        Ad ad=new Ad();
+        if(id!=null){
+            ad.setId(Integer.parseInt(id));
+        }
+        Ad ad1 = adManagerService.getAdById(ad);
+        model.addAttribute("ad",ad1);
+        return "manager/modifyAd";
+    }
+
+
+    //修改功能信息
+    @PostMapping("modifyAd")
+    @ResponseBody
+    public String modifyAd(HttpServletRequest request){
+        String adname = request.getParameter("adname");
+        String path = request.getParameter("path");
+        String id = request.getParameter("id");
+        String url = request.getParameter("url");
+        Ad ad=new Ad();
+        if(id!=null){
+            ad.setId(Integer.parseInt(id));
+        }
+        ad.setPath(path);
+        ad.setAdname(adname);
+        ad.setUrl(url);
+        int i = adManagerService.updateAd(ad);
+        if(i>0) {
+            return "success";
+        }else{
+            return "faild";
+        }
+    }
+
+
+
+
+
+
+
+
+    //跳转到广告位管理页(分页显示)
+    @RequestMapping("toadlocation")
+    public String toadlocation( Integer pageNo,Integer pageSize,Model model){
+        Adlocation adlocation=new Adlocation();
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?1:pageSize;
+        adlocation.setPageNo(pageNo);
+        adlocation.setPageSize(pageSize);
+        //获得分页对象
+        Pagination page = adManagerService.getAdLocationByPage(adlocation);
+        String url="/toadlocation";
+        page.pageView(url,null);
+        model.addAttribute("page",page);
+        return "/manager/adlocation";
+    }
+
 }
