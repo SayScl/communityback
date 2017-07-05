@@ -18,6 +18,9 @@ public interface ManagerMapper {
     //查询所有广告位
     public List<Adlocation> getAdLocations();
 
+    //查询所有广告
+    public List<Ad> getAd();
+
     //添加一条广告
     public int addAd(Ad ad);
 

@@ -25,6 +25,13 @@ public class AdManagerServiceImpl implements AdManagerService{
         return adLocations;
     }
 
+    //查询所有广告
+    @Override
+    public List<Ad> getAd() {
+        List<Ad> ad = managerMapper.getAd();
+        return ad;
+    }
+
     @Override
     @Transactional
     public int addAd(Ad ad) {

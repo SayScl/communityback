@@ -65,8 +65,8 @@
 <!-- left menu starts -->
 <div class="span2 main-menu-span">
     <div class="well nav-collapse sidebar-nav">
-        <ul class="nav nav-tabs nav-stacked main-menu" th:each="function:${list}">
-            <li><a class="ajax-link" th:href="${function.url}" target="right"><i class="icon-home"></i><span class="hidden-tablet" th:text="${function.functionname}"> 角色管理</span></a></li>
+        <ul class="nav nav-tabs nav-stacked main-menu" th:each="function:${session.list}">
+            <li><a class="ajax-link" th:href="${function.url}" ><i class="icon-home"></i><span class="hidden-tablet" th:text="${function.functionname}"> 角色管理</span></a></li>
         </ul>
     </div><!--/.well -->
 </div><!--/span-->
@@ -74,11 +74,24 @@
 
 
 <div id="content" class="span10">
-    <iframe name="right" height="800px" width="100%" scrolling="auto"></iframe>
+    <div class="row-fluid">
+        <div class="box span12">
+            <div class="box-header well">
+                <h2><i class="icon-info-sign"></i> 欢迎</h2>
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <p>欢迎来到迷家后台管理系统</p>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
 </div><!--/row-->
-
-<!-- content ends -->
-
 
 
 <!-- jQuery -->

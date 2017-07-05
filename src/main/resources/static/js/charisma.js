@@ -13,7 +13,7 @@ $(document).ready(function(){
 		switch_theme(current_theme);
 		$('#themes i').removeClass('icon-ok');
 		$(this).find('i').addClass('icon-ok');
-	});
+    });
 	
 	
 	function switch_theme(theme_name)
@@ -93,6 +93,99 @@ $(document).ready(function(){
 	
 	//other things to do on document ready, seperated for ajax calls
 	docReady();
+
+
+
+
+
+
+
+
+
+
+    //七年上传文件
+
+    var _token = null;
+
+    $.ajax({
+        url: '/muser/token',
+        type: 'get',
+        success: function (data) {
+            _token = data;
+            console.debug('A: ' + _token);
+        }
+    });
+
+
+    // 上传空间URL
+    var uploadSpace = 'http://osatg44gp.bkt.clouddn.com';
+
+    qiniu.config({
+        url: uploadSpace,
+        uploadUrl: 'up-z2.qiniu.com' // 七牛统一的一个上传域名，固定
+    });
+
+
+    qiniu.bind($('#uploadButton'), {
+        filter: 'image'
+    }).on('file', function(file) {
+
+        console.debug('---');
+
+        var imagesBucket = qiniu.bucket('community', {
+            putToken: _token
+        });
+
+        console.debug('B: ' + _token);
+
+        // 上传文件名
+//                var fileName = 'abc_' + new Date().getMilliseconds() + '.jpg';
+
+//                var fileName
+
+        console.debug(file);
+
+        var fileName = file.name;
+
+        fileName = fileName+new Date().getMilliseconds();
+
+//                    return;
+
+        console.debug('文件名：'  + fileName);
+
+
+        // Upload
+        imagesBucket.putFile(fileName, file)
+            .then(
+                function(reply) {
+                    // 上传成功
+//                            console.dir(reply);
+                    console.debug(reply.hash);
+                    console.debug(reply.key);
+                    var se = new Date().getMilliseconds();
+//                          $('#result').html(uploadSpace + '/' + fileName + '?v=' + se);
+                    $('#result').text(uploadSpace + '/' + fileName + '?v=' + se);
+                    $('#hresult').val(uploadSpace + '/' + fileName + '?v=' + se)
+                },
+                function(err) {
+                    // 上传失败
+                    console.error(err);
+                }
+            );
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 //上面是加载就启动js
@@ -708,4 +801,81 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 });
 
+$.extend({
+    upload2Qiniu:function () {
 
+    }
+});
+
+//添加广告
+function submit(){
+    var adname=$("#adname").val();
+    var path=$("#hresult").val();
+    var url=$("#url").val();
+    var adlocationid=$("#adlocationid :selected").val();
+
+    $.ajax({
+        url:"/muser/addAd",
+        type:"post",
+        data:{adname:adname,path:path,url:url,adlocationid:adlocationid},
+        success:function(data){
+            if(data=="success"){
+                alert("广告位添加成功")
+            }
+        }
+    })
+}
+
+//修改页面功能
+function modify(){
+    var limitname=$('#limitname').val();
+    var path=$('#hresult').val();
+    var id=$('#id').val();
+    $.ajax({
+        url:"/muser/modifyLimit",
+        data:{id:id,limitname:limitname,path:path},
+        type:"post",
+        success:function(data){
+
+            if(data=="success"){
+                alert('修改成功')
+            }else{
+                alert("修改失败")
+            }
+        }
+    })
+
+}
+
+function submitlimit(){
+    var limitname=$("#limitname").val();
+    var path=$("#hresult").val();
+
+    $.ajax({
+        url:"/muser/addLimit",
+        type:"post",
+        data:{limitname:limitname,path:path},
+        success:function(data){
+            if(data=="success"){
+                alert("添加成功")
+            }else{
+                alert("添加失败")
+            }
+        }
+    })
+}
+
+
+//增加小区
+function addcommunity(){
+    $.ajax({
+        url:"/muser/addcommunity",
+        data:{cityid:cityid,community:community},
+        type:"get",
+        success:function (data) {
+            if(data=="success"){
+                $("#spansubmit").text("添加成功")
+            }
+        }
+    })
+}

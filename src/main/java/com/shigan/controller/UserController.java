@@ -36,8 +36,9 @@ public class UserController {
         User u1 = userService.getUser(user);
         if(u1!=null){
             List<Function> list = functionService.getFunction(u1.getRoleid());
-            model.addAttribute("list",list);
+            /*model.addAttribute("list",list);*/
             session.setAttribute("user",u1);
+            session.setAttribute("list",list);
             return "firstPageBack";
         }else{
             model.addAttribute("faild","登录失败");

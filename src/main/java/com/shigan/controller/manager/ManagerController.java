@@ -191,8 +191,17 @@ public class ManagerController {
     //跳转到广告管理页面
     @RequestMapping("toadmanager")
     public String toAdManager(Model model){
+        List<Ad> ads = adManagerService.getAd();
+
+        model.addAttribute("list",ads);
+        return "/manager/ad";
+    }
+
+    //跳转到新增广告业
+    @RequestMapping("toupload")
+    public String toupload(Model model){
         List<Adlocation> adLocations = adManagerService.getAdLocations();
-        model.addAttribute("list",adLocations);
+        model.addAttribute("list1",adLocations);
         return "/manager/upload";
     }
 
@@ -231,7 +240,7 @@ public class ManagerController {
     //跳转到增加页面功能
     @RequestMapping("toAddLimit")
     public String toAddLimit(){
-        return "manager/addLimit";
+        return "manager/addlimit";
     }
 
     //增加新面面功能
