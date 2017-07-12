@@ -16,10 +16,10 @@
     </resultMap>
 
     <select id="getUsers"  resultMap="userMap">
-        select * from user;
+        select * from user
     </select>
 
     <select id="getUser" parameterType="user" resultMap="userMap">
-        select * from user where phone_number=#{phoneNumber} and password=#{password};
+        select * from user where phone_number=#{phoneNumber} and password=#{password}
     </select>
 </mapper>

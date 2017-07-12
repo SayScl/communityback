@@ -7,10 +7,25 @@
         <id property="id" column="id"></id>
         <result property="functionname" column="functionname"></result>
         <result property="url" column="url"></result>
+        <result property="mainfunctionid" column="mainfunctionid"></result>
     </resultMap>
 
 
-    <select id="getFunction" parameterType="java.lang.Integer" resultMap="functionMap">
-        SELECT * FROM FUNCTION WHERE id IN (SELECT functionid FROM userrole WHERE roleid=#{roleid})
+
+    <!--主权限-->
+    <resultMap id="mainfunctionMap" type="mainfunction">
+        <id property="id" column="id"></id>
+        <result property="mainfunctionname" column="mainfunctionname"></result>
+    </resultMap>
+
+
+    <select id="getFunction" parameterType="function" resultMap="functionMap">
+        SELECT * FROM FUNCTION WHERE id IN (SELECT functionid FROM userrole WHERE roleid=#{roleid}) and mainfunctionid=#{mainfunctionid}
     </select>
+
+    <!--查找主权限-->
+    <select id="getmainfunction" resultMap="mainfunctionMap">
+        select * from mainfunction
+    </select>
+
 </mapper>

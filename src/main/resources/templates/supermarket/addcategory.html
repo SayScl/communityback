@@ -78,60 +78,10 @@
 
 
 <div id="content" class="span10">
-    <div class="row-fluid sortable">
-        <div class="box span12">
-            <div class="box-header well" >
-                <h2><i class="icon-user"></i>用户管理</h2>
-                <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-                </div>
-            </div>
-            <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable datatable">
-                    <thead>
-                    <tr>
-                        <th>广告名</th>
-                        <th>广告位</th>
-                        <th>广告链接</th>
-                        <th>广告图片链接</th>
-                        <th>图片</th>
-                        <th colspan="2">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <tr th:each="ad:${page.list}">
-                        <th th:text="${ad.adname}">广告名</th>
-                        <th th:text="${ad.adlocationid}">广告位</th>
-                        <th th:text="${ad.url}">广告链接</th>
-                        <th th:text="${ad.path}">广告图片链接</th>
-                        <th><img th:src="${ad.path}"/></th>
-                        <th>删除</th>
-                        <th><a th:href="@{/muser/toModifyAd(id=${ad.id})}">修改</a></th>
-                    </tr>
-                    <tr><a th:href="@{/muser/toupload}">添加广告</a></tr>
-                    </tbody>
-                </table>
-
-
-                <!--导航条-->
-                <div>
-                    <span style="font-size: 1.1em;color: #0B90C4">当前第</span><span style="font-size: 1.1em;color:blue" th:text="${page.pageNum}"></span><span style="font-size: 1.1em;color: #0B90C4">页</span>
-                    <span th:if="${page.hasPreviousPage}"><a th:href="@{/muser/toadmanager(pageNo=${page.prePage})}">上一页</a></span>
-                    <span th:each="num:${page.navigatepageNums}">
-                        <a style="border: 1px solid darkgray;font-size: 1.1em" th:href="@{/muser/toadmanager(pageNo=${num})}" th:text="${num}"></a>
-                    </span>
-                    <span th:if="${page.hasNextPage}"><a th:href="@{/muser/toadmanager(pageNo=${page.nextPage})}">下一页</a></span>
-                </div>
-                <!--导航条-->
-
-            </div>
-        </div><!--/span-->
-
-    </div><!--/row-->
-
+    <div >
+        <p>分类名：<input type="text" name="categoryname" id="categoryname" onblur="testcategory()"/><span id="spancategoryname"></span></p>
+        <a href="javascript:void(0)" onclick="submit()">添加</a><span id="spansubmit"></span>
+    </div>
 </div><!--/row-->
 
 
@@ -204,6 +154,44 @@
 <script src="/js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="/js/charisma.js"></script>
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var categoryname;
+    function testcategory(){
+        categoryname= $("#categoryname").val();
+        $.ajax({
+            url:"/market/testcategory",
+            data:{categoryname:categoryname},
+            type:"get",
+            success:function (data) {
+                if(data=="have"){
+                    $("#categoryname").val("");
+                    $("#spancategoryname").text('分类已经存在');
+                    categoryname="";
+                    return false;
+                }else{
+                    $("#spancategoryname").text('');
+                }
+            }
+        })
+
+    }
+    function submit(){
+        $.ajax({
+            url:"/market/addcategory",
+            data:{categoryname:categoryname},
+            type:"get",
+            success:function (data) {
+                if(data=="success"){
+                    $("#spansubmit").text("添加成功")
+                }
+            }
+        })
+    }
+    /*]]>*/
+</script>
 
 
 </body>

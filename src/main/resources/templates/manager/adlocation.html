@@ -65,11 +65,15 @@
 <!-- left menu starts -->
 <div class="span2 main-menu-span">
     <div class="well nav-collapse sidebar-nav">
-        <ul class="nav nav-tabs nav-stacked main-menu" th:each="function:${session.list}">
-            <li><a class="ajax-link" th:href="${function.url}" ><i class="icon-home"></i><span class="hidden-tablet" th:text="${function.functionname}"> 角色管理</span></a></li>
+        <ul class="nav nav-tabs nav-stacked main-menu" th:each="mainfunction:${session.list}">
+            <li class="nav-header hidden-tablet" th:text="${mainfunction.mainfunctionname}"></li>
+            <ul class="nav nav-tabs nav-stacked main-menu" th:each="function:${mainfunction.functions}">
+                <li class="nav-header hidden-tablet"><a th:href="@{${function.url}}" th:text="${function.functionname}"></a></li>
+            </ul>
         </ul>
     </div><!--/.well -->
 </div><!--/span-->
+
 <!-- left menu ends -->
 
 
@@ -102,9 +106,16 @@
                     </tr>
                     </tbody>
                 </table>
-                <div th:each="page:${page.pageView}">
-                    <div id="content"  th:text="${page}"></div>
+                <!--导航条-->
+                <div>
+                    <span style="font-size: 1.1em;color: #0B90C4">当前第</span><span style="font-size: 1.1em;color:blue" th:text="${page.pageNum}"></span><span style="font-size: 1.1em;color: #0B90C4">页</span>
+                    <span th:if="${page.hasPreviousPage}"><a th:href="@{/muser/toadlocation(pageNo=${page.prePage})}">上一页</a></span>
+                    <span th:each="num:${page.navigatepageNums}">
+                        <a style="border: 1px solid darkgray;font-size: 1.1em" th:href="@{/muser/toadlocation(pageNo=${num})}" th:text="${num}"></a>
+                    </span>
+                    <span th:if="${page.hasNextPage}"><a th:href="@{/muser/toadlocation(pageNo=${page.nextPage})}">下一页</a></span>
                 </div>
+                <!--导航条-->
             </div>
         </div><!--/span-->
 

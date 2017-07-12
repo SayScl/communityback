@@ -47,25 +47,42 @@ public class ManagerController {
    private CityService cityService;
    @Autowired
    private QiniuUploadService qiniuUploadService;
+   //用户管理
     @RequestMapping("usermanager")
-    public String getUsers(Model model){
+    public String getUsers(Integer pageNo,Integer pageSize,Model model){
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?10:pageSize;
+        //获得分页对象
+        PageHelper.startPage(pageNo,pageSize);
         List<User> users = userManagerService.getUsers();
-        model.addAttribute("users",users);
+        PageInfo<User> page=new PageInfo<User>(users);
+        model.addAttribute("page",page);
         return "/manager/usermanager";
     }
 
+    //角色管理
     @RequestMapping("rolemanager")
-    public String getUR(Model model){
+    public String getUR(Integer pageNo,Integer pageSize,Model model){
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?10:pageSize;
+        //获得分页对象
+        PageHelper.startPage(pageNo,pageSize);
         List<UserRole> list = userRoleService.getUR();
-        model.addAttribute("list",list);
+        PageInfo<UserRole> page=new PageInfo<UserRole>(list);
+        model.addAttribute("page",page);
         return "/manager/userrole";
     }
 
     //查询城市与小区
     @RequestMapping("citymanager")
-    public String getCity(Model model){
+    public String getCity(Integer pageNo,Integer pageSize,Model model){
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?10:pageSize;
+        //获得分页对象
+        PageHelper.startPage(pageNo,pageSize);
         List<City> list = cityService.getCity();
-        model.addAttribute("citys",list);
+        PageInfo<City> page=new PageInfo<City>(list);
+        model.addAttribute("page",page);
         return "/manager/city";
     }
 
@@ -199,10 +216,14 @@ public class ManagerController {
 
     //跳转到广告管理页面
     @RequestMapping("toadmanager")
-    public String toAdManager(Model model){
+    public String toAdManager(Integer pageNo,Integer pageSize,Model model){
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?10:pageSize;
+        //获得分页对象
+        PageHelper.startPage(pageNo,pageSize);
         List<Ad> ads = adManagerService.getAd();
-
-        model.addAttribute("list",ads);
+        PageInfo<Ad> page=new PageInfo<Ad>(ads);
+        model.addAttribute("page",page);
         return "/manager/ad";
     }
 
@@ -240,9 +261,14 @@ public class ManagerController {
 
     //查询所有页面功能
     @RequestMapping("limitmanager")
-    public String getLimits(Model model){
+    public String getLimits(Integer pageNo,Integer pageSize,Model model){
+        pageNo=pageNo==null?1:pageNo;
+        pageSize=pageSize==null?10:pageSize;
+        //获得分页对象
+        PageHelper.startPage(pageNo,pageSize);
         List<Limit> limits = limitService.getLimits();
-        model.addAttribute("limits",limits);
+        PageInfo<Limit> page=new PageInfo<Limit>(limits);
+        model.addAttribute("page",page);
         return "manager/limit";
     }
 
@@ -344,26 +370,20 @@ public class ManagerController {
     }
 
 
-
-
-
-
-
-
     //跳转到广告位管理页(分页显示)
     @RequestMapping("toadlocation")
     public String toadlocation( Integer pageNo,Integer pageSize,Model model){
-        Adlocation adlocation=new Adlocation();
         pageNo=pageNo==null?1:pageNo;
-        pageSize=pageSize==null?1:pageSize;
-        adlocation.setPageNo(pageNo);
-        adlocation.setPageSize(pageSize);
+        pageSize=pageSize==null?10:pageSize;
         //获得分页对象
-        Pagination page = adManagerService.getAdLocationByPage(adlocation);
-        String url="/toadlocation";
-        page.pageView(url,null);
+        PageHelper.startPage(pageNo,pageSize);
+        List<Adlocation> list = adManagerService.getAdLocations();
+        PageInfo<Adlocation> page=new PageInfo<Adlocation>(list);
         model.addAttribute("page",page);
         return "/manager/adlocation";
     }
+
+
+
 
 }

@@ -164,6 +164,7 @@ $(document).ready(function(){
                     console.debug(reply.key);
                     var se = new Date().getMilliseconds();
 //                          $('#result').html(uploadSpace + '/' + fileName + '?v=' + se);
+					$('#imgg').attr("src",uploadSpace + '/' + fileName + '?v=' + se);
                     $('#result').text(uploadSpace + '/' + fileName + '?v=' + se);
                     $('#hresult').val(uploadSpace + '/' + fileName + '?v=' + se)
                 },

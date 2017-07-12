@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shigan.mapper.supermarket.SupermarketMapper">
+    <!--超市分类map-->
+    <resultMap id="categoryMap" type="category">
+        <id property="id" column="id"></id>
+        <result property="categoryname" column="categoryname"></result>
+        <result property="isshow" column="isshow"></result>
+    </resultMap>
+
+
+    <!--品牌Map-->
+    <resultMap id="brandMap" type="brand">
+        <id property="id" column="id"></id>
+        <result property="brandname" column="brandname"></result>
+        <result property="isshow" column="isshow"></result>
+        <result property="categoryid" column="categoryid"></result>
+        <result property="categoryname" column="categoryname"></result>
+        <result property="cid" column="cid"></result>
+    </resultMap>
+
+
+    <!--skuMap-->
+    <resultMap id="skuMap" type="sku">
+        <id property="id" column="id"></id>
+        <result property="price" column="price"></result>
+        <result property="store" column="store"></result>
+        <result property="storewarning" column="storewarning"></result>
+        <result property="skupropertyid" column="skupropertyid"></result>
+        <result property="propertyid" column="propertyid"></result>
+        <result property="skuname" column="skuname"></result>
+    </resultMap>
+
+    <!--skupropertyMap-->
+    <resultMap id="skupropertyMap" type="skuproperty">
+        <id property="id" column="id"></id>
+        <result property="skupropertyname" column="skupropertyname"></result>
+        <result property="propertyids" column="propertyids"></result>
+    </resultMap>
+
+    <!--propertyMap-->
+    <resultMap id="propertyMap" type="property">
+        <id property="id" column="id"></id>
+        <result property="propertyname" column="propertyname"></result>
+    </resultMap>
+
+
+    <!--商品Map-->
+    <resultMap id="productMap" type="product">
+        <id property="id" column="id"></id>
+        <result property="productname" column="productname"></result>
+        <result property="brandname" column="brandname"></result>
+        <result property="brandid" column="brandid"></result>
+        <result property="isshow" column="isshow"></result>
+        <result property="updown" column="updown"></result>
+        <result property="skuid" column="skuid"></result>
+        <result property="categoryid" column="categoryid"></result>
+        <result property="skuname" column="skuname"></result>
+        <result property="price" column="price"></result>
+        <result property="store" column="store"></result>
+        <result property="storewarning" column="storewarning"></result>
+        <result property="path" column="path"></result>
+        <result property="description" column="description"></result>
+        <result property="propertyid" column="propertyid"></result>
+        <result property="propertyname" column="propertyname"></result>
+    </resultMap>
+
+
+
+
+    <!--查找分类-->
+    <select id="getcategory" resultMap="categoryMap">
+        select * from category where isshow=1
+    </select>
+
+
+    <!--根据名字查找分类-->
+    <select id="getcategorybyname" parameterType="category" resultMap="categoryMap">
+        select * from category where categoryname like   #{categoryname} and isshow=1
+    </select>
+
+    <!--增加分类-->
+    <insert id="addcategory" parameterType="category">
+        INSERT into category (categoryname,isshow) values (#{categoryname},#{isshow})
+    </insert>
+
+    <!--删除分类信息（修改显示状态）-->
+    <update id="delcategory" parameterType="category">
+        update category set isshow=#{isshow} where id=#{id}
+    </update>
+
+    <!--修改分类信息-->
+    <update id="updatecategory" parameterType="category">
+        update category
+         <set>
+             <if test="categoryname!=null and categoryname!=''">categoryname=#{categoryname},</if>
+             <if test="isshow!=null">isshow=#{isshow}</if>
+         </set>
+           where id=#{id}
+    </update>
+
+
+
+
+    <!--查找品牌-->
+    <select id="getbrand" resultMap="brandMap">
+        select b.*,c.id as cid from brand b left join category c on b.categoryid=c.id where b.isshow=1
+    </select>
+
+
+    <!--根据名字查找品牌-->
+    <select id="getbrandbyname" parameterType="brand" resultMap="brandMap">
+        select * from brand where brandname like   #{brandname} and isshow=1
+    </select>
+
+    <!--增加品牌-->
+    <insert id="addbrand" parameterType="brand">
+        INSERT into brand (brandname,isshow,categoryid) values (#{brandname},#{isshow},#{categoryid})
+    </insert>
+
+    <!--删除品牌信息（修改显示状态）-->
+    <update id="delbrand" parameterType="brand">
+        update brand set isshow=#{isshow} where id=#{id}
+    </update>
+
+    <!--修改品牌信息-->
+    <update id="updatebrand" parameterType="brand">
+        update category
+        <set>
+            <if test="brandname!=null and brandname!=''">brandname=#{brandname},</if>
+            <if test="isshow!=null">isshow=#{isshow}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+
+
+    <!--查找所有SKU-->
+    <select id="getsku" resultMap="skuMap">
+        select * from sku
+    </select>
+
+    <!--添加新SKU-->
+    <insert id="addsku" parameterType="sku">
+        INSERT into sku (skuname,price,store,storewarning,propertyid,description,path)
+         values (#{skuname},#{price},#{store},#{storewarning},#{propertyid},#{description},#{path})
+    </insert>
+
+
+    <!--查找所有SKU属性-->
+    <select id="getskuproperty" resultMap="skupropertyMap">
+        select * from skuproperty
+    </select>
+
+    <!--查找所有property-->
+    <select id="getproperty" resultMap="propertyMap">
+        select * from property;
+    </select>
+
+    <!--根据属性ID查找属性值-->
+    <select id="getpropertybyid" parameterType="property" resultMap="propertyMap">
+        select * from property where id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--查找所有商品-->
+    <select id="getproduct" resultMap="productMap">
+        select * from product where isshow=1
+    </select>
+
+    <!--添加商品-->
+    <insert id="addproduct" parameterType="product">
+        insert into product values(null,#{productname},#{brandname},#{brandid},#{isshow},#{updown},#{skuid},#{categoryid})
+    </insert>
+
+    <!--删除商品-->
+    <update id="deleteproduct" parameterType="product">
+        update product set isshow=0
+    </update>
+
+
+    <!--商品上架-->
+    <update id="up" parameterType="java.lang.Integer">
+        update product set updown=1 where id=#{id}
+    </update>
+
+    <!--商品下架-->
+    <update id="down" parameterType="java.lang.Integer">
+        update product set updown=0 where id=#{id}
+    </update>
+
+    <!--查看商品所有信息-->
+    <select id="getproductinfo" parameterType="java.lang.Integer" resultMap="productMap">
+          SELECT a.*,pro.propertyname
+           FROM
+              (SELECT p.productname,p.brandname,p.skuid,s.skuname,s.price,
+               s.store,s.storewarning,s.path,s.description,s.propertyid
+                    FROM
+                      product p
+                    LEFT JOIN sku s ON p.skuid=s.id where p.id=#{id})
+            AS a LEFT JOIN  property pro ON a.propertyid=pro.id
+    </select>
+</mapper>

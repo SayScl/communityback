@@ -18,6 +18,7 @@ public class CommunitybackApplication extends WebMvcConfigurerAdapter{
 	public void addInterceptors (InterceptorRegistry interceptorRegistry){
 
 		interceptorRegistry.addInterceptor(new UserSecurityInterceptor()).addPathPatterns("/muser/**");
+		interceptorRegistry.addInterceptor(new UserSecurityInterceptor()).addPathPatterns("/market/**");
 	}
 }
 
