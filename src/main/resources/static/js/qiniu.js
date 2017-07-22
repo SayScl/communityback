@@ -557,7 +557,7 @@
 
      }, {
        key: 'md2html',
-       value: function md2html(opts) {
+       value: function md2html(opts,callback) {
          if (utils.isFunction(opts)) {
            callback = opts;
            opts = {

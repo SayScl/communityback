@@ -57,6 +57,7 @@
             <a class="brand" href="index.html">  <span>智慧社区便民店</span></a>
             <div class="top-nav nav-collapse">
                 欢迎你<span th:text="${session.user.nickname}"></span>
+                <span id="neworder" style="font-size: 2em;color: red"></span>
             </div><!--/.nav-collapse -->
         </div>
     </div>
@@ -98,7 +99,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     <tr th:each="ad:${page.list}">
                         <th th:text="${ad.categoryname}">分类名</th>
                         <th th:text="${ad.isshow}">是否删除</th>

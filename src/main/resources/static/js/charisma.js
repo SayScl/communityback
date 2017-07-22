@@ -1,4 +1,19 @@
 $(document).ready(function(){
+
+function order(){
+    $.ajax({
+        url:"/market/order",
+        type:"post",
+        success:function(data){
+            if(data=='have'){
+            	$("#neworder").text("你有新订单");
+            }
+        }
+    })
+}
+   var interval= window.setInterval(
+   	order(),2000)
+
 	//themes, change CSS with JS
 	//default theme(CSS) is cerulean, change it if needed
 	var current_theme = $.cookie('current_theme')==null ? 'cerulean' :$.cookie('current_theme');
@@ -129,6 +144,7 @@ $(document).ready(function(){
     qiniu.bind($('#uploadButton'), {
         filter: 'image'
     }).on('file', function(file) {
+
 
         console.debug('---');
 

@@ -67,6 +67,26 @@
         <result property="propertyname" column="propertyname"></result>
     </resultMap>
 
+    <!--订单Map-->
+    <resultMap id="orderMap" type="order">
+        <id property="id" column="id"></id>
+        <result property="orderid" column="orderid"></result>
+        <result property="userid" column="userid"></result>
+        <result property="name" column="name"></result>
+        <result property="address" column="address"></result>
+        <result property="shoplist" column="shoplist"></result>
+        <result property="totalprice" column="totalprice"></result>
+        <result property="time" column="time"></result>
+        <result property="play" column="play"></result>
+        <result property="playstatu" column="playstatu"></result>
+        <result property="evaluatestatu" column="evaluatestatu"></result>
+        <result property="count" column="count"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="sendstatu" column="sendstatu"></result>
+        <result property="path" column="path"></result>
+        <result property="phonenumber" column="phonenumber"></result>
+    </resultMap>
+
 
 
 
@@ -205,4 +225,25 @@
                     LEFT JOIN sku s ON p.skuid=s.id where p.id=#{id})
             AS a LEFT JOIN  property pro ON a.propertyid=pro.id
     </select>
+
+
+    <!--根据所有订单-->
+    <select id="getorder" resultMap="orderMap">
+        select * from shoporder
+    </select>
+
+    <!--查询所有已经支付的订单-->
+    <select id="getorderplay" resultMap="orderMap">
+        SELECT * FROM shoporder WHERE playstatu=1
+    </select>
+
+    <!--开始配送-->
+    <update id="send" parameterType="java.lang.Integer">
+        update shoporder set sendstatu=0 where id=#{id}
+    </update>
+
+    <!--删除未支付订单-->
+    <delete id="deletenoplayorder" parameterType="java.lang.String">
+        delete from shoporder where playstatu=0 and createtime=#{createtime}
+    </delete>
 </mapper>
