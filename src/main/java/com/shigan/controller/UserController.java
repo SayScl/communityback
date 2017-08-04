@@ -1,5 +1,6 @@
 package com.shigan.controller;
 
+import com.shigan.common.Common;
 import com.shigan.pojo.Function;
 import com.shigan.pojo.Mainfunction;
 import com.shigan.pojo.User;
@@ -50,6 +51,7 @@ public class UserController {
             list.add(m);
         }
             session.setAttribute("user",u1);
+            Common.user=u1;
             session.setAttribute("list",list);
             return "firstPageBack";
         }else{

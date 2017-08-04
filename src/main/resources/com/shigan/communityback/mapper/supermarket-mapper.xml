@@ -85,6 +85,7 @@
         <result property="sendstatu" column="sendstatu"></result>
         <result property="path" column="path"></result>
         <result property="phonenumber" column="phonenumber"></result>
+        <result property="reback" column="reback"></result>
     </resultMap>
 
 
@@ -214,11 +215,26 @@
         update product set updown=0 where id=#{id}
     </update>
 
+
+    <!--修改商品信息-->
+    <update id="updateproduct" parameterType="product">
+        update  product p left join sku s on p.skuid=s.id
+        <set>
+            <if test="productname!=null and productname!=''">p.productname=#{productname},</if>
+            <if test="price!=null and price!=''">s.price=#{price},</if>
+            <if test="store!=null and store!=''">s.store=#{store},</if>
+            <if test="storewarning!=null and storewarning!=''">s.storewarning=#{storewarning},</if>
+            <if test="description!=null and description!=''">s.description=#{description},</if>
+            <if test="path!=null and path!=''">s.path=#{path},</if>
+        </set>
+        where p.id=#{id}
+    </update>
+
     <!--查看商品所有信息-->
     <select id="getproductinfo" parameterType="java.lang.Integer" resultMap="productMap">
           SELECT a.*,pro.propertyname
            FROM
-              (SELECT p.productname,p.brandname,p.skuid,s.skuname,s.price,
+              (SELECT p.id,p.productname,p.brandname,p.skuid,s.skuname,s.price,
                s.store,s.storewarning,s.path,s.description,s.propertyid
                     FROM
                       product p
@@ -240,6 +256,11 @@
     <!--开始配送-->
     <update id="send" parameterType="java.lang.Integer">
         update shoporder set sendstatu=0 where id=#{id}
+    </update>
+
+    <!--退钱-->
+    <update id="reback" parameterType="java.lang.Integer">
+        update shoporder set sendstatu=1,reback=2 where id=#{id}
     </update>
 
     <!--删除未支付订单-->

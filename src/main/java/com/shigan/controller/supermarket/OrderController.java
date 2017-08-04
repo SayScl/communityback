@@ -39,6 +39,7 @@ public class OrderController {
             if(playstatu==1 && sendstatu==2){
                 flag=true;
             }else if(playstatu==0) {
+                //删除订单时间超过凌晨的订单
                 Calendar canow=Calendar.getInstance();
                 int daynow = canow.get(Calendar.DAY_OF_MONTH);
                 int monthnow = canow.get(Calendar.MONTH);
@@ -91,6 +92,17 @@ public class OrderController {
         String id = request.getParameter("id");
         int i = orderService.send(Integer.parseInt(id));
         if(i>0){
+            return "success";
+        }else{
+            return "faild";
+        }
+    }
+    @RequestMapping("reback")
+    @ResponseBody
+    public String reback(HttpServletRequest request){
+        String id = request.getParameter("id");
+        int reback = orderService.reback(Integer.parseInt(id));
+        if(reback>0){
             return "success";
         }else{
             return "faild";

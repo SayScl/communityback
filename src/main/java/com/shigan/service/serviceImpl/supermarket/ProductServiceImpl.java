@@ -54,4 +54,11 @@ public class ProductServiceImpl implements ProductService {
         int i = supermarketMapper.down(id);
         return i;
     }
+
+    //修改品牌信息
+    @Override
+    public int updateproduct(Product product) {
+        int i = supermarketMapper.updateproduct(product);
+        return i;
+    }
 }

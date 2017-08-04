@@ -23,6 +23,15 @@ public class Order {
     private String path;
     private List<Shopcaritems> shopcaritems;
     private String phonenumber;
+    private int reback;
+
+    public int getReback() {
+        return reback;
+    }
+
+    public void setReback(int reback) {
+        this.reback = reback;
+    }
 
     public String getPhonenumber() {
         return phonenumber;

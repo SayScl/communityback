@@ -14,6 +14,15 @@ public class User {
     private String address;
     private String password;
     private Integer roleid;
+    private Integer communityid;
+
+    public Integer getCommunityid() {
+        return communityid;
+    }
+
+    public void setCommunityid(Integer communityid) {
+        this.communityid = communityid;
+    }
 
     public void setRoleid(Integer roleid) {
         this.roleid = roleid;

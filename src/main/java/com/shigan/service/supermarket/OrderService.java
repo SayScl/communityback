@@ -17,4 +17,7 @@ public interface OrderService {
 
     //<!--删除未支付订单-->
     public int deletenoplayorder(String date);
+
+    //<!--退钱-->
+    public int reback(Integer id);
 }

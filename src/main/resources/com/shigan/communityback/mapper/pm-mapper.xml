@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shigan.mapper.PmMapper">
+    <!--物业报修Map-->
+    <resultMap id="wybxMap" type="wybx">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="path" column="path"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="statu" column="statu"></result>
+        <result property="userid" column="userid"></result>
+        <result property="communityid" column="communityid"></result>
+    </resultMap>
+
+
+    <!--小区公告Map-->
+    <resultMap id="xqggMap" type="xqgg">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="path" column="path"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="communityid" column="communityid"></result>
+        <result property="user" column="user"></result>
+        <result property="title" column="title"></result>
+    </resultMap>
+
+
+    <!--物业工作展示-->
+    <resultMap id="wyzsMap" type="wyzs">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="path" column="path"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="communityid" column="communityid"></result>
+        <result property="user" column="user"></result>
+        <result property="title" column="title"></result>
+    </resultMap>
+
+
+
+    <!--新房装修-->
+    <resultMap id="xfzxMap" type="xfzx">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="path" column="path"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="communityid" column="communityid"></result>
+        <result property="user" column="user"></result>
+        <result property="userid" column="userid"></result>
+        <result property="title" column="title"></result>
+        <result property="hot" column="hot"></result>
+    </resultMap>
+
+
+    <!--我的装修-->
+    <resultMap id="wdzxMap" type="wdzx">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="progress" column="progress"></result>
+        <result property="path" column="path"></result>
+        <result property="userid" column="userid"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="communityid" column="communityid"></result>
+        <result property="cuserid" column="cuserid"></result>
+    </resultMap>
+
+    <!--快捷充值Map-->
+    <resultMap id="kjczMap" type="kjcz">
+        <id property="id" column="id"></id>
+        <result property="userid" column="userid"></result>
+        <result property="communityid" column="communityid"></result>
+        <result property="money" column="money"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="type" column="type"></result>
+        <result property="statu" column="statu"></result>
+    </resultMap>
+
+    <!--投票选项-->
+    <resultMap id="seMap" type="se">
+        <id property="id" column="id"></id>
+        <result property="tid" column="tid"></result>
+        <result property="content" column="content"></result>
+        <result property="progress" column="progress"></result>
+        <result property="path" column="path"></result>
+    </resultMap>
+
+    <!--小区投票Map-->
+<resultMap id="xqtpMap" type="xqtp">
+    <id column="id" property="id"></id>
+    <result property="title" column="title"></result>
+    <result property="se" column="se"></result>
+    <result property="createtime" column="createtime"></result>
+    <result property="type" column="type"></result>
+    <result property="cnum" column="cnum"></result>
+    <result property="communityid" column="communityid"></result>
+    <result property="content" column="content"></result>
+    <result property="confirm" column="confirm"></result>
+    <result property="limittime" column="limittime"></result>
+</resultMap>
+
+    <!--查询该小区的报修情况-->
+    <select id="getbxbycommunityid" parameterType="java.lang.Integer" resultMap="wybxMap">
+        select * from wybx where communityid=#{communityid}
+    </select>
+
+    <!--接受报修-->
+    <update id="acceptbx" parameterType="wybx">
+        update wybx set statu=#{statu} where id=#{id}
+    </update>
+
+<!--小区物业展示-->
+    <select id="getzsbycommunityid" parameterType="java.lang.Integer" resultMap="wyzsMap">
+        select * from wyzs where communityid=#{communityid}
+    </select>
+
+    <!--根据id查物业工作展示-->
+    <select id="getzsbyid" parameterType="java.lang.Integer" resultMap="wyzsMap">
+        select * from wyzs where id=#{id}
+    </select>
+
+    <!--修改小区物业展示内容-->
+    <update id="upzsbyid" parameterType="wyzs">
+        update wyzs
+        <set>
+        <if test="content!=null and content!=''">content=#{content},</if>
+        <if test="path!=null and path!=''">path=#{path},</if>
+        <if test="title!=null and title!=''">title=#{title}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <!--增加小区物业工作展示-->
+    <insert id="addzs" parameterType="wyzs">
+        insert into wyzs values(null,#{content},#{path},#{createtime},#{communityid},#{user},#{title})
+    </insert>
+
+    <!--根据小区Id查小区公告-->
+    <select id="getggbycommunityid" parameterType="java.lang.Integer" resultMap="xqggMap">
+        select * from xqgg where communityid=#{communityid} order by createtime desc
+    </select>
+
+    <!--根据公告id查看公告详细信息-->
+    <select id="getgginfobyid" parameterType="java.lang.Integer" resultMap="xqggMap">
+        select * from xqgg where id=#{id}
+    </select>
+
+    <!--根据id修改公告内容-->
+    <update id="upgg" parameterType="xqgg">
+        update xqgg <set>
+        <if test="content!=null and content!=''">content=#{content},</if>
+        <if test="title!=null and title!=''">title=#{title},</if>
+        <if test="path!=null and path!=''">path=#{path}</if>
+    </set>
+        where id=#{id}
+    </update>
+
+    <!--增加小区公告-->
+    <insert id="addgg" parameterType="xqgg">
+        insert into xqgg values(null,#{content},#{path},#{createtime},#{communityid},#{user},#{title})
+    </insert>
+
+
+
+    <!--查找小区要充值的记录-->
+    <select id="getczbyuserid" parameterType="java.lang.Integer" resultMap="kjczMap">
+        select * from kjcz where communityid=#{communityid} and statu=0
+    </select>
+
+    <!--充值修改充值状态-->
+    <update id="cz" parameterType="java.lang.Integer">
+        update kjcz set statu=1 where id=#{id}
+    </update>
+
+
+    <!--查看该小区的装修风格-->
+    <select id="getxfzxbycommunityid" parameterType="java.lang.Integer" resultMap="xfzxMap">
+        select * from xfzx where communityid=#{communityid}
+    </select>
+
+    <!--增加装修风格-->
+    <insert id="addxfzx" parameterType="xfzx">
+        insert into xfzx VALUES (null,#{content},#{path},#{createtime},#{communityid},#{user},#{userid},#{title},#{hot})
+    </insert>
+
+    <!--根据id修改装修风格-->
+    <update id="upxfzxbyid" parameterType="xfzx">
+        update xfzx
+        <set>
+            <if test="content!=null and content!=''">content=#{content},</if>
+            <if test="title!=null and title!=''">title=#{title},</if>
+            <if test="path!=null and path!=''">path=#{path}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--根据id查找装修风格-->
+    <select id="getxfbyid" parameterType="java.lang.Integer" resultMap="xfzxMap">
+        select * from xfzx where id=#{id}
+    </select>
+
+
+
+    <!--查找该小区的个人装修日志-->
+    <select id="getwdzxbycommunityid" parameterType="java.lang.Integer" resultMap="wdzxMap">
+        select * from wdzx where communityid=#{communityid}
+    </select>
+
+    <!--根据id查找装修日志-->
+    <select id="getwdbyid" parameterType="java.lang.Integer" resultMap="wdzxMap">
+        select * from wdzx where id=#{id}
+    </select>
+
+    <!--新增住户装修日志-->
+    <insert id="addwdzx" parameterType="wdzx">
+        insert into wdzx values(null,#{content},#{progress},#{path},#{userid},#{createtime},#{communityid},#{cuserid})
+    </insert>
+
+    <!--根据id修改装修日志-->
+    <update id="upwd" parameterType="wdzx">
+        update wdzx
+        <set>
+            <if test="content!=null and content!=''">content=#{content},</if>
+            <if test="path!=null and path!=''">path=#{path},</if>
+            <if test="progress!=null and progress!=''">progress=#{progress}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--查看该小区的投票-->
+    <select id="gettpbycommunityid" parameterType="java.lang.Integer" resultMap="xqtpMap">
+        select * from xqtp where communityid=#{communityid}
+    </select>
+
+    <!--投票保存后查找这个投票id-->
+    <select id="getid" parameterType="xqtp" resultType="java.lang.Integer">
+        select id from xqtp where content=#{content} and title=#{title} and createtime=#{createtime}
+    </select>
+
+    <!--根据id查找投票-->
+    <select id="gettpbyid" parameterType="java.lang.Integer" resultType="xqtp">
+        select * from xqtp where id=#{id}
+    </select>
+
+    <!--增加新的投票-->
+    <insert id="addtp" parameterType="xqtp">
+        insert into xqtp values(null,#{content},#{title},#{se},#{createtime},#{type},#{cnum},#{communityid},#{confirm},#{limittime})
+    </insert>
+
+    <!--修改投票信息-->
+    <update id="uptp" parameterType="xqtp">
+        update xqtp
+        <set>
+            <if test="title!=null and title!=''">title=#{title},</if>
+            <if test="content!=null and content!=''">content=#{content},</if>
+            <if test="se !=null and se!=''">se=#{se}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--增加选项-->
+    <insert id="addse" parameterType="java.util.List">
+           insert into se  values
+        <foreach collection="list" item="kk" separator=",">
+           (null,#{kk.tid},#{kk.content},#{kk.progress},#{kk.path})
+        </foreach>
+    </insert>
+
+    <!--根据tid查选项-->
+    <select id="getsebyftid" parameterType="java.lang.Integer" resultMap="seMap">
+        select * from se where tid=#{tid}
+    </select>
+
+</mapper>

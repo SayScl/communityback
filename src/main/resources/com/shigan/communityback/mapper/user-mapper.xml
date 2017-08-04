@@ -20,6 +20,15 @@
     </select>
 
     <select id="getUser" parameterType="user" resultMap="userMap">
-        select * from user where phone_number=#{phoneNumber} and password=#{password}
+        select * from user
+        <where>
+            <if test="phoneNumber!=null and phoneNumber!=''">
+                phone_number=#{phoneNumber} and password=#{password}
+            </if>
+            <if test="id!=null and id!=''">
+                id=#{id}
+            </if>
+        </where>
     </select>
+
 </mapper>

@@ -82,6 +82,9 @@ public interface SupermarketMapper {
     //<!--删除商品-->
     public int deleteproduct(Product product);
 
+    //<!--修改商品信息-->
+    public int updateproduct(Product product);
+
     //查看所有商品详细信息
     public Product getproductinfo(Integer id);
 
@@ -99,5 +102,8 @@ public interface SupermarketMapper {
 
     //<!--删除未支付订单-->
     public int deletenoplayorder(String date);
+
+    //<!--退钱-->
+    public int reback(Integer id);
 
 }

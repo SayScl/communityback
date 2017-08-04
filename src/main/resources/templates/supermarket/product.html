@@ -117,7 +117,7 @@
                             <a th:href="@{/market/deleteproduct(id=${product.id})}">删除</a>
                         </th>
                         <th th:if="${product.updown}==0">
-                            <a th:href="@{/market/updateproduct(id=${product.id})}">修改</a>
+                            <a th:href="@{/market/toupdateproduct(id=${product.id})}">修改</a>
                         </th>
                         <th colspan="2" th:if="${product.updown}==1">
                             <a th:href="@{/market/toproductinfo(id=${product.id})}">查看</a>

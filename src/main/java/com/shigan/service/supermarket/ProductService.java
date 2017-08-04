@@ -26,4 +26,7 @@ public interface ProductService {
 
     // <!--商品下架-->
     public int down(Integer id);
+
+    //<!--修改商品信息-->
+    public int updateproduct(Product product);
 }

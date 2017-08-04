@@ -119,11 +119,12 @@
                         <th  th:if="${order.playstatu==0 }">
                             <span th:id="${order.id}" onclick="send(this)" style="cursor: pointer"> 未支付</span>
                         </th>
-                        <th  th:if="${order.playstatu==1 and order.sendstatu==2}">
+                        <th  th:if="${order.playstatu==1 and order.sendstatu==2 and order.reback!=1}">
                             <span th:id="${order.id}" onclick="send(this)" style="cursor: pointer"> 配送</span>
                         </th>
                         <th th:if="${order.playstatu==1 and order.sendstatu==0}">配送中</th>
                         <th th:if="${order.playstatu==1 and order.sendstatu==1}">已送达</th>
+                        <th th:id="${order.id}" onclick="reback(this)" th:if="${order.playstatu==1 and order.sendstatu==2 and order.reback==1}">申请退款</th>
                     </tr>
 
                     </tbody>
@@ -221,6 +222,23 @@
                 }
             }
         })
+    }
+
+
+    function reback(t){
+        var id=$(t).attr("id");
+        $.ajax({
+            url:"/market/reback",
+            data:{id:id},
+            type:"post",
+            success:function(data){
+                if(data=="success"){
+                    alert("退款成功")
+                    window.location.href="/market/toorder"
+                }
+            }
+        })
+
     }
     /*]]>*/
 </script>

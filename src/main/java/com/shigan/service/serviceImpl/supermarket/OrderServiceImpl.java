@@ -35,5 +35,11 @@ public class OrderServiceImpl implements OrderService {
         return i;
     }
 
+    @Override
+    public int reback(Integer id) {
+        int reback = supermarketMapper.reback(id);
+        return reback;
+    }
+
 
 }

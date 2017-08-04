@@ -30,7 +30,8 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public int addbrand(Brand brand) {
-        return 0;
+        int i = supermarketMapper.addbrand(brand);
+        return i;
     }
 
     @Override
