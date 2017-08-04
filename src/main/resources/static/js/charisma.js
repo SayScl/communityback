@@ -23,7 +23,7 @@ $(document).ready(function(){
         var sp=new Array();
         sp=$("#path"+i).val().split(",");
         for(var j=0;j<sp.length;j++){
-            html=html+"<img style='width: 50px;height: 50px' src='"+sp[j]+"'>"
+            html=html+"<img style='width: 150px;height: 150px' src='"+sp[j]+"'>"
         }
         $("#imgpath"+i).append(html)
     }

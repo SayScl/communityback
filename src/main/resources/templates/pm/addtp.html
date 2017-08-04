@@ -93,15 +93,15 @@
 <div id="content" class="span10">
     <div >
         <input type="hidden" th:if="${xqtp.id!=null}" id="xqtpid" th:value="${xqtp.id}"/>
-        <p>投票主题：<input type="text" name="title" id="title" th:if="${xqtp.title!=null and xqtp.title!=''}" th:value="${xqtp.title}"/></p>
+        <p>投票主题：<input type="text" name="title" id="title" th:if="${xqtp.title!=null and xqtp.title!=''}" th:value="${xqtp.title}" readonly="readonly"/></p>
         <p><input type="text" name="title" id="title" th:if="${xqtp.title==null}"/></p>
-        <p>投票介绍：<input type="text" name="content" id="content1" th:if="${xqtp.content!=null and xqtp.content!=''}" th:value="${xqtp.content}" /></p>
+        <p>投票介绍：<input type="text" name="content" id="content1" th:if="${xqtp.content!=null and xqtp.content!=''}" th:value="${xqtp.content}" readonly="readonly"/></p>
         <p><input type="text" name="content" id="content1" th:if="${xqtp.content==null or xqtp.content==''}"  /></p>
         <p>投票类型：<select id="type" th:if="${xqtp.type==null or xqtp.type==''}"><option value="1">单选</option>
                             <option value="2">多选</option>
                         </select>
         </p>
-        <p><input type="text" th:if="${xqtp.type!=null or xqtp.type!=''}" th:value="${xqtp.type==1?'单选':'多选'}" readonly="readonly"/>
+        <p><input type="text" th:if="${(xqtp.type!=null or xqtp.type!='')and (xqtp.type==1 or xqtp.type==2) }" th:value="${xqtp.type==1?'单选':'多选'}" readonly="readonly"/>
         </p>
         <p>可选几个选项:<input th:if="${xqtp.cnum!=null and xqtp.cnum!=''}" th:value="${xqtp.cnum}" id="cnum" type="text" readonly="readonly" /></p>
         <p><input th:if="${xqtp.cnum==null or xqtp.cnum==''}"  id="cnum" type="text" onclick="check()" /></p>
@@ -110,7 +110,7 @@
         <p><input type="text" name="limittime" id="limittime" th:if="${xqtp.limittime==null or xqtp.limittime==''}"  /></p>
         <p><button onclick="confirmtitle()">确认主题</button></p>
         <input id="tpid" type="hidden" />
-        <p onclick="addse()">添加投票选项</p>
+        <p onclick="addse()"><button style="background-color: grey">添加投票选项</button></p>
         <a href="javascript:void(0)" onclick="submittp()">添加</a><span id="spansubmit"></span>
     </div>
 </div><!--/row-->
@@ -190,6 +190,11 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     function addse(){
+        var title=$("#title").val();
+        if(title==null || title==''){
+            alert("请先确认主投票主题");
+            return false;
+        }
         var id=$("#tpid").val();
         window.location.href="/pm/toaddse?id="+id
     }
@@ -208,10 +213,30 @@
 
     function confirmtitle(){
         var title=$("#title").val();
+        if(title==null || title==''){
+            alert("请先确认投票主题");
+            return false;
+        }
         var content=$("#content1").val();
+        if(content==null || content==''){
+            alert("请先确认投票说明");
+            return false;
+        }
         var type=$("#type :selected").val();
+        if(type==null || type==''){
+            alert("请先确认投票类型");
+            return false;
+        }
         var cnum=$("#cnum").val();
+        if(cnum==null || cnum==''){
+            alert("请先确认投票选择数量");
+            return false;
+        }
         var limittime=$("#limittime").val();
+        if(limittime==null || limittime==''){
+            alert("请先确认投票有效时间");
+            return false;
+        }
         $.ajax({
             url:"/pm/addtp",
             type:"post",
@@ -230,7 +255,10 @@
 
     function submittp(){
        var id=$("#xqtpid").val();
-       alert(id);
+       if(id==null || id==''){
+           alert("请先确认主题");
+           return false;
+       }
        $.ajax({
            url:"/pm/uptp",
            data:{id:id},

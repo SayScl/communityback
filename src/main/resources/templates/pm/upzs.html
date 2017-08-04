@@ -184,7 +184,11 @@
         var ppath=$("[name='ppath']").val();
         var path="";
         for(var i=0;i<ppath.length;i++){
-            path=path+ppath[i];
+            if(i==0){
+                path=path+$(ppath[i]).val();
+            }else{
+                path=path+","+$(ppath[i]).val();
+            }
         }
         var id=t;
         debugger

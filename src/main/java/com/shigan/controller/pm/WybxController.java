@@ -63,4 +63,23 @@ public class WybxController {
         }
     }
 
+
+
+
+    //确认处理完
+    @PostMapping("dotwobx")
+    @ResponseBody
+    public String dotwobx(HttpServletRequest request){
+        String id = request.getParameter("id");
+        Wybx bx=new Wybx();
+        bx.setId(Integer.parseInt(id));
+        bx.setStatu(2);
+        int i = wybxService.acceptbx(bx);
+        if(i>0){
+            return "success";
+        }else{
+            return "faild";
+        }
+    }
+
 }

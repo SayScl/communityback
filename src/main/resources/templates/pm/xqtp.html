@@ -82,7 +82,7 @@
     <div class="row-fluid sortable">
         <div class="box span12">
             <div class="box-header well" >
-                <h2><i class="icon-user"></i><物页报修></物页报修></h2>
+                <h2><i class="icon-user"></i>业主投票</h2>
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
                     <a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
@@ -102,7 +102,7 @@
                     <tr th:each="xqtp,iterstatu:${xqtp}">
                         <th th:text="${xqtp.title}"></th>
                         <th th:text="${xqtp.createtime}"></th>
-                        <th><a th:href="@{/pm/touptp(id=${xqtp.id})}">修改</a></th>
+                        <th><a href="javascript:void(0)">删除</a></th>
                     </tr>
                     <tr><a th:href="@{/pm/toaddtp}">增加新投票</a></tr>
                     </tbody>

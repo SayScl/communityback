@@ -111,8 +111,8 @@
                         <th th:text="${wybx.createtime}"></th>
                         <input th:id="'path'+${iterstatu.index}" name="path123" type="hidden" th:value="${wybx.path}"/>
                         <th th:id="'imgpath'+${iterstatu.index}"></th>
-                        <th  th:if="${wybx.statu}==0"><span th:id="${wybx.id}" style="cursor: pointer" onclick="accept(this)">已报修</span></th>
-                        <th th:if="${wybx.statu}==1" th:text="处理中"></th>
+                        <th  th:if="${wybx.statu}==0"><span th:id="${wybx.id}" style="cursor: pointer;color: blue" onclick="accept(this)">已报修</span></th>
+                        <th th:if="${wybx.statu}==1"><span th:id="${wybx.id}" style="cursor: pointer;color: blue" onclick="confrim(this)">处理中</span></th>
                         <th th:if="${wybx.statu}==2" th:text="等确认"></th>
                         <th th:if="${wybx.statu}==3" th:text="修完"></th>
                     </tr>
@@ -209,6 +209,21 @@
             success:function(date){
                 if(date=='success'){
                     alert("已经接受报修");
+                    window.location.href="/pm/towybx"
+                }
+            }
+        })
+    }
+
+    function confrim(t){
+        var id=$(t).attr("id");
+        $.ajax({
+            url:"/pm/dotwobx",
+            data:{id:id},
+            type:"post",
+            success:function(date){
+                if(date=='success'){
+                    alert("已经修完等待住户确认");
                     window.location.href="/pm/towybx"
                 }
             }

@@ -181,10 +181,14 @@
     function modify1111(t){
         var content=$("#content1").val();
         var title=$("#title").val();
-        var ppath=$("[name='ppath']").val();
+        var ppath=$("[name='ppath']");
         var path="";
         for(var i=0;i<ppath.length;i++){
-            path=path+ppath[i];
+            if(i==0){
+                path=path+$(ppath[i]).val();
+            }else{
+                path=path+","+$(ppath[i]).val();
+            }
         }
         var id=t;
         debugger
